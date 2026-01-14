@@ -25,60 +25,69 @@ JPA repositories implemented
 
 ---
 ##Database
-erDiagram
-    USER {
-        VARCHAR uid PK
-        VARCHAR firstname
-        VARCHAR lastname
-        VARCHAR password
-        VARCHAR email UK
-        VARCHAR tag UK
-        VARCHAR gender
-        DATE dob
-        INTEGER tel
-        DATE createdAt
-        DATE updatedAt
+
+classDiagram
+    class USER {
+        +VARCHAR uid (PK)
+        +VARCHAR firstname
+        +VARCHAR lastname
+        +VARCHAR password
+        +VARCHAR email (UNIQUE)
+        +VARCHAR tag (UNIQUE)
+        +VARCHAR gender
+        +DATE dob
+        +INTEGER tel
+        +DATE createdAt
+        +DATE updatedAt
+        +getters()
+        +setters()
     }
 
-    CARD {
-        VARCHAR cardId PK
-        VARCHAR cardNumber UK
-        VARCHAR balance
-        VARCHAR billingAddress
-        INTEGER cvv
-        VARCHAR cardHolder
-        INTEGER Pin
-        DATE issuedAt
-        DATE createdAt
-        DATE updatedAt
+    class CARD {
+        +VARCHAR cardId (PK)
+        +VARCHAR cardNumber (UNIQUE)
+        +VARCHAR balance
+        +VARCHAR billingAddress
+        +INTEGER cvv
+        +VARCHAR cardHolder
+        +INTEGER Pin
+        +DATE issuedAt
+        +DATE createdAt
+        +DATE updatedAt
+        +getters()
+        +setters()
     }
 
-    ACCOUNT {
-        VARCHAR accountId PK
-        VARCHAR currency
-        VARCHAR symbol
-        VARCHAR code
-        VARCHAR accountName
-        VARCHAR accountNumber UK
-        INTEGER balance
-        VARCHAR label
-        DATE createdAt
-        DATE updatedAt
+    class ACCOUNT {
+        +VARCHAR accountId (PK)
+        +VARCHAR currency
+        +VARCHAR symbol
+        +VARCHAR code
+        +VARCHAR accountName
+        +VARCHAR accountNumber (UNIQUE)
+        +INTEGER balance
+        +VARCHAR label
+        +DATE createdAt
+        +DATE updatedAt
+        +getters()
+        +setters()
     }
 
-    TRANSACTIONS {
-        VARCHAR txId PK
-        VARCHAR txFee
-        VARCHAR description
-        VARCHAR sender
-        VARCHAR receiver
-        VARCHAR status
-        VARCHAR type
-        DATE createdAt
-        DATE updatedAt
+    class TRANSACTIONS {
+        +VARCHAR txId (PK)
+        +VARCHAR txFee
+        +VARCHAR description
+        +VARCHAR sender
+        +VARCHAR receiver
+        +VARCHAR status
+        +VARCHAR type
+        +DATE createdAt
+        +DATE updatedAt
+        +getters()
+        +setters()
     }
 
-    USER ||--o{ CARD : "holds"
-    USER ||--o{ ACCOUNT : "owns"
-    USER ||--o{ TRANSACTIONS : "makes"
-    ACCOUNT ||--o{ TRANSACTIONS : "involved_in"
+    USER -- CARD : has
+    USER -- ACCOUNT : owns
+    USER -- TRANSACTIONS : initiates
+    TRANSACTIONS -- ACCOUNT : impacts
