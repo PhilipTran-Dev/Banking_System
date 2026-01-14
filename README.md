@@ -25,68 +25,60 @@ JPA repositories implemented
 
 ---
 ##Database
-                                           +----------------------------------+
-                                           |               CARD               |
-                                           +----------------------------------+
-                                           | cardId: VARCHAR (PK)             |
-                                           | cardNumber: VARCHAR (UNIQUE)     |
-                                           | balance: VARCHAR                 |
-                                           | billingAddress: VARCHAR          |
-                                           | cvv: INTEGER                     |
-                                           | cardHolder: VARCHAR              |
-                                           | Pin: INTEGER                     |
-      +--------------------------------+   | issuedAt: DATE                   |
-      |              USER              |---| createdAt: DATE                  |
-      +--------------------------------+   | updatedAt: DATE                  |
-      | uid: VARCHAR (PK)              |   +----------------------------------+
-      | firstname: VARCHAR             |   | getters() and setters()          |
-      | lastname: VARCHAR              |   +----------------------------------+
-      | password: VARCHAR              |
-      | email: VARCHAR (UNIQUE)        |
-      | tag: VARCHAR (UNIQUE)          |
-      | gender: VARCHAR                |
-      | dob: DATE                      |
-      | tel: INTEGER                   |
-      | createdAt: DATE                |
-      | updatedAt: DATE                |
-      +--------------------------------+
-      | getters() and setters()        |
-      +--------------------------------+
-          |            |
-          |            |
-          |            v
-          |   +----------------------------------+
-          |   |             ACCOUNT              |
-          |   +----------------------------------+
-          |   | accountId: VARCHAR (PK)          |
-          |   | currency: VARCHAR                |
-          |   | symbol: VARCHAR                  |
-          |   | code: VARCHAR                    |
-          |   | accountName: VARCHAR             |
-          |   | accountNumber: VARCHAR (UNIQUE)  |
-          |   | balance: INTEGER                 |
-          |   | label: VARCHAR                   |
-          |   | createdAt: DATE                  |
-          |   | updatedAt: DATE                  |
-          |   +----------------------------------+
-          |   | getters() and setters()          |
-          |   +----------------------------------+
-          |            ^
-          |            |
-          v            |
-+----------------------------------+
-|          TRANSACTIONS            |
-+----------------------------------+
-| txId: VARCHAR (PK)               |
-| txFee: VARCHAR                   |
-| description: VARCHAR             |
-| sender: VARCHAR                  |
-| receiver: VARCHAR                |
-| status: VARCHAR                  |
-| type: VARCHAR                    |
-| createdAt: DATE                  |
-| updatedAt: DATE                  |
-+----------------------------------+
-| getters() and setters()          |
-+----------------------------------+
+erDiagram
+    USER {
+        VARCHAR uid PK
+        VARCHAR firstname
+        VARCHAR lastname
+        VARCHAR password
+        VARCHAR email UK
+        VARCHAR tag UK
+        VARCHAR gender
+        DATE dob
+        INTEGER tel
+        DATE createdAt
+        DATE updatedAt
+    }
 
+    CARD {
+        VARCHAR cardId PK
+        VARCHAR cardNumber UK
+        VARCHAR balance
+        VARCHAR billingAddress
+        INTEGER cvv
+        VARCHAR cardHolder
+        INTEGER Pin
+        DATE issuedAt
+        DATE createdAt
+        DATE updatedAt
+    }
+
+    ACCOUNT {
+        VARCHAR accountId PK
+        VARCHAR currency
+        VARCHAR symbol
+        VARCHAR code
+        VARCHAR accountName
+        VARCHAR accountNumber UK
+        INTEGER balance
+        VARCHAR label
+        DATE createdAt
+        DATE updatedAt
+    }
+
+    TRANSACTIONS {
+        VARCHAR txId PK
+        VARCHAR txFee
+        VARCHAR description
+        VARCHAR sender
+        VARCHAR receiver
+        VARCHAR status
+        VARCHAR type
+        DATE createdAt
+        DATE updatedAt
+    }
+
+    USER ||--o{ CARD : "holds"
+    USER ||--o{ ACCOUNT : "owns"
+    USER ||--o{ TRANSACTIONS : "makes"
+    ACCOUNT ||--o{ TRANSACTIONS : "involved_in"
