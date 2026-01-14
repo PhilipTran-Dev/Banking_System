@@ -25,7 +25,6 @@ JPA repositories implemented
 
 ---
 ##Database
-
 classDiagram
     class USER {
         +VARCHAR uid (PK)
