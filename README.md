@@ -21,7 +21,7 @@ The project is currently in the initial phase with entities and repositories imp
 Project initialization  
 Database entities defined  
 JPA repositories implemented  
-
+AppConfiguration
 
 ---
 ##Database
@@ -90,3 +90,34 @@ classDiagram
     USER -- ACCOUNT : owns
     USER -- TRANSACTIONS : initiates
     TRANSACTIONS -- ACCOUNT : impacts
+
+## Flow in Configuration 
+--AppConfiguration
+
+UserRepos
+        ↓
+UserDetailsService
+        ↓
+DaoAuthenticationProvider
+        ↓
+AuthenticationManager
+        ↓
+PasswordEncoder
+        ↓
+DaoAuthenticationProvider
+        ↓
+AuthenticationManager
+        ↓
+DaoAuthenticationProvider
+        ↓
+UserDetailsService
+        ↓
+UserRepos
+        ↓
+Database
+        ↓
+DaoAuthenticationProvider
+        ↓
+PasswordEncoder.matches()
+
+
