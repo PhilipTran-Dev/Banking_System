@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.security.SignatureException;
 import java.util.Date;
 
+//annotation process business logic
 @Service
 public class JWTService {
     @Value("${jwtSecretKey}")
