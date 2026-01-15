@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "bank_account")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -34,7 +35,7 @@ public class Account {
     private Status status;
     private Type type;
 
-    @ManyToOne 
+    @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
 

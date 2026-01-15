@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "bank_card")
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

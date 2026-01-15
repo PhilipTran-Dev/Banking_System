@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "bank_transaction")
 public class Transactions {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -31,8 +32,12 @@ public class Transactions {
     @ManyToOne
     @JoinColumn(name = "card_id")
     private Card card;
+
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
 
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 }
