@@ -1,6 +1,7 @@
-package com.example.BankingSystem.Service;
+package com.example.BankingSystem.Filter;
 
 import com.example.BankingSystem.Entity.User;
+import com.example.BankingSystem.Service.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,6 @@ import java.io.IOException;
 public class JWTAuthenticationFilter extends OncePerRequestFilter { //extends ensure filter HTTP request only one time
     private final JWTService jwtService;
     private final UserDetailsService userDetailsService;
-
     @Override
     protected void doFilterInternal( //@NonNull are required parameters is not null
             @NonNull HttpServletRequest request, //representation for request from client (HTTP header, get/post method, Authorization)
