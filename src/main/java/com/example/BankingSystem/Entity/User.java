@@ -1,6 +1,7 @@
 package com.example.BankingSystem.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,6 +32,7 @@ public class User implements UserDetails{
     private String lastname;
     @Column(nullable = false,unique = true)
     private String username;
+    @JsonIgnore
     private String password;
     private String tag;
     private String gender;
@@ -44,12 +46,15 @@ public class User implements UserDetails{
     private List<String> roles;
 
     @OneToOne( mappedBy = "owner")
+    @JsonIgnore
     private Card card;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Transactions> transactions;
 
     @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Account> account;
 
 
