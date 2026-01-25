@@ -1,16 +1,13 @@
 package com.example.BankingSystem.Service;
-
-import ch.qos.logback.core.testUtil.RandomUtil;
 import com.example.BankingSystem.DTO.AccountDTO;
-import com.example.BankingSystem.Entity.Account;
-import com.example.BankingSystem.Entity.User;
+import com.example.BankingSystem.DTO.TransferDTO;
+import com.example.BankingSystem.Entity.*;
 import com.example.BankingSystem.Helper.AccountHelper;
 import com.example.BankingSystem.Repository.AccountRepos;
+import com.example.BankingSystem.Repository.TransactionRepos;
 import com.example.BankingSystem.Util.RandomUnits;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.naming.OperationNotSupportedException;
 import java.util.List;
 
 
@@ -19,6 +16,7 @@ import java.util.List;
 public class AccountService {
     private final AccountRepos accountRepos;
     private final AccountHelper accountHelper;
+    private final TransactionRepos transactionRepos;
 
     public Account createAccount(AccountDTO accountDTO, User user) throws Exception {
         Long accountNumber;
@@ -37,14 +35,66 @@ public class AccountService {
                     .build();
             return accountRepos.save(account);
     }
+    public List<Account> getUserAccounts(String uid){
+        return accountRepos.findAllByOwnerUid(uid);
+    }
 
+
+    //Prevent duplicate account creation.
     public void validateAccountNonExistsForUser(String code, String uid) throws RuntimeException {
         if(accountRepos.existsByCodeAndOwnerUid(code,uid)){
             throw new RuntimeException("Account of validation is already");
         }
     }
 
-    public List<Account> getUserAccounts(String uid){
-        return accountRepos.findAllByOwnerUid(uid);
+    //Prevent users from accessing accounts that do not belong to them.
+    public void validateAccountOwner(Account account, User user) throws UnsupportedOperationException{
+        if(!account.getOwner().getUid().equals(user.getUid())){
+            throw new UnsupportedOperationException("Invalid account owner");
+        }
     }
+
+    //check remaining funds in account
+    public void validateSufficientFunds(Account account, double amount) throws UnsupportedOperationException{
+        if(account.getBalance() < amount){
+            throw new UnsupportedOperationException("Insufficient funds in this account");
+        }
+    }
+
+    public Transactions performTransfer(Account senderAccount, Account receiverAccount, double amount) {
+        validateSufficientFunds(senderAccount,amount * 1.01);
+        senderAccount.setBalance(senderAccount.getBalance() - amount * 1.01);
+        receiverAccount.setBalance(receiverAccount.getBalance() + amount);
+        accountRepos.saveAll(List.of(senderAccount,receiverAccount));
+        var senderTransaction = Transactions.builder()
+                .account(senderAccount)
+                .status(Status.COMPLETED)
+                .type(Type.WITHDRAW)
+                .txFee(amount * 0.01)
+                .amount(amount)
+                .owner(senderAccount.getOwner())
+                .build();
+        var recipientTransaction = Transactions.builder()
+                .account(receiverAccount)
+                .status(Status.COMPLETED)
+                .type(Type.DEPOSIT)
+                .amount(amount)
+                .owner(receiverAccount.getOwner())
+                .build();
+        //saveAll can be saved many objects so them need "List.of". It different with save normal
+         transactionRepos.saveAll(List.of(senderTransaction,recipientTransaction));
+         return senderTransaction;
+    }
+
+    public Transactions transferBalance(TransferDTO transferDTO, User user) {
+        var senderAccount = accountRepos.findByCodeAndOwnerUid(transferDTO.getCode(),user.getUid())
+                .orElseThrow(()-> new UnsupportedOperationException("Account of tupe currency do not exist for user"));
+        var receiverAccount  = accountRepos.findByAccountNumber(transferDTO.getRecipientAccountNumber())
+                .orElseThrow(() -> new UnsupportedOperationException("Recipient account not found"));
+        return performTransfer(senderAccount,receiverAccount ,transferDTO.getAmount());
+    }
+
+
+
+
 }

@@ -35,7 +35,7 @@ public class Transactions {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private User owner;
+    private User owner; 
 
     @ManyToOne
     @JoinColumn(name = "account_id")
