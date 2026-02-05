@@ -10,7 +10,7 @@ import lombok.*;
 public class AccountDTO {
     private String code;
     private String label;
-    private char symbol;
+    private String symbol;
     private double balance;
 
 }

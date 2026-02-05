@@ -32,7 +32,7 @@ public class Card {
     private LocalDateTime exp;
     private String cvv;
     private String pin;
-    private String billingAdress;
+    private String billingAddress;
 
     @OneToOne
     @JoinColumn(name = "owner_id")

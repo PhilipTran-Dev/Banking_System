@@ -28,7 +28,7 @@ public class Account {
     private String currency;
     private String code;
     private String label;
-    private char symbol;
+    private String symbol;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp

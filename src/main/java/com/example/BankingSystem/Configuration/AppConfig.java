@@ -11,6 +11,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 @Configuration
 @RequiredArgsConstructor
@@ -42,5 +46,20 @@ public class AppConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration){
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    //take api from outside
+    @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
+
+
+     //Single-thread scheduled executor.
+     // Ensures scheduled tasks execute sequentially to avoid concurrency issues.
+     //Suitable for lightweight and periodic background jobs.
+    @Bean
+    public ScheduledExecutorService scheduledExecutorService(){
+        return Executors.newScheduledThreadPool(1);
     }
 }

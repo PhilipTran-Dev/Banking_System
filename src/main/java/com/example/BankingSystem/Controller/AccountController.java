@@ -1,6 +1,7 @@
 package com.example.BankingSystem.Controller;
 
 import com.example.BankingSystem.DTO.AccountDTO;
+import com.example.BankingSystem.DTO.ConvertDTO;
 import com.example.BankingSystem.DTO.TransferDTO;
 import com.example.BankingSystem.Entity.Account;
 import com.example.BankingSystem.Entity.Transactions;
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/accounts")
@@ -37,4 +39,16 @@ public class AccountController {
         User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(accountService.transferBalance(transferDTO,user));
     }
+
+    @GetMapping("/rates")
+    public ResponseEntity<Map<String,Double>> getExchangeRate(){
+        return ResponseEntity.ok(accountService.getExchangeRate());
+    }
+
+    @PostMapping("/convert")
+    public ResponseEntity<Transactions> convertCurrency(@RequestBody ConvertDTO convertDTO, Authentication authentication) throws Exception{
+        User user = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(accountService.convertCurrency(convertDTO, user));
+    }
+
 }

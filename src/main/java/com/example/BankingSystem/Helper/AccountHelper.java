@@ -11,17 +11,19 @@ import java.util.Map;
 @Setter
 @RequiredArgsConstructor
 public class AccountHelper {
-    private final Map<String, String> CURRENCIES = Map.of(
-            "VND", "Vietnamese Dong",
-            "USD", "US Dollar",
-            "EUR", "Euro",
-            "JPY", "Japanese Yen",
-            "GBP", "British Pound",
-            "CNY", "Chinese Yuan",
-            "KRW", "Korean Won",
-            "SGD", "Singapore Dollar",
-            "AUD", "Australian Dollar",
-            "CAD", "Canadian Dollar"
+    private final Map<String, String> CURRENCIES = Map.ofEntries(
+            Map.entry("VND", "Vietnamese Dong"),
+            Map.entry("USD", "US Dollar"),
+            Map.entry("EUR", "Euro"),
+            Map.entry("JPY", "Japanese Yen"),
+            Map.entry("GBP", "British Pound"),
+            Map.entry("CNY", "Chinese Yuan"),
+            Map.entry("KRW", "Korean Won"),
+            Map.entry("SGD", "Singapore Dollar"),
+            Map.entry("AUD", "Australian Dollar"),
+            Map.entry("CAD", "Canadian Dollar"),
+            Map.entry("NZD", "New Zealand Dollar")
     );
+
 
 }
